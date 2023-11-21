@@ -88,7 +88,7 @@ class _SearchState extends State<Search> {
             ),
             if (check)
               FutureBuilder(
-                  future: rep.fetchNewsCategoryApi(searchQuery ?? 'home'),
+                  future: rep.fetchNewsCategoryApi(searchQuery ?? ''),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       print('Data: ${snapshot.data}');
@@ -123,11 +123,11 @@ class _SearchState extends State<Search> {
                       return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: newsData?.results?.length,
+                          itemCount: newsData?.response!.docs!.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            final result = newsData?.results![index];
-                            final newsUrl = result!.url;
+                            final result = newsData?.response!.docs![index];
+                            //final newsUrl = result!.webUrl!;
 
                             return Padding(
                               padding: EdgeInsets.symmetric(
@@ -140,7 +140,7 @@ class _SearchState extends State<Search> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          NewsDetails(result: result),
+                                          NewsDetails(docsResult: result),
                                     ),
                                   );
                                 },
@@ -183,10 +183,24 @@ class _SearchState extends State<Search> {
                                                         BorderRadius.circular(
                                                             10),
                                                     image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          result!.multimedia!
-                                                              .first.url
-                                                              .toString()),
+                                                      image: result?.multimedia !=
+                                                                  null &&
+                                                              result!
+                                                                  .multimedia!
+                                                                  .isNotEmpty &&
+                                                              result!
+                                                                      .multimedia!
+                                                                      .first!
+                                                                      .url !=
+                                                                  null
+                                                          ? NetworkImage(
+                                                              result!
+                                                                  .multimedia!
+                                                                  .first!
+                                                                  .url!
+                                                                  .toString(),
+                                                            )
+                                                          : NetworkImage(''),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -210,7 +224,13 @@ class _SearchState extends State<Search> {
                                                   children: [
                                                     Flexible(
                                                       child: Text(
-                                                        result.title.toString(),
+                                                        result!.headline
+                                                                    ?.main !=
+                                                                null
+                                                            ? result!
+                                                                .headline!.main!
+                                                                .toString()
+                                                            : 'No headline exists',
                                                         style: TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:
@@ -229,17 +249,28 @@ class _SearchState extends State<Search> {
                                                                   .spaceBetween,
                                                           children: [
                                                             Text(
-                                                              result.subsection
-                                                                  .toString(),
+                                                              result!.printSection !=
+                                                                      null
+                                                                  ? result!
+                                                                      .printSection!
+                                                                      .toString()
+                                                                  : ' ',
                                                               style: TextStyle(
                                                                 fontSize: 13,
                                                                 //fontWeight: FontWeight.bold,
                                                               ),
                                                             ),
                                                             Text(
-                                                              formattedDate(result
-                                                                  .publishedDate
-                                                                  .toString()),
+                                                              formattedDate(
+                                                                result!.pubDate !=
+                                                                        null
+                                                                    ? result!
+                                                                        .pubDate
+                                                                        .toString()
+                                                                    : DateTime
+                                                                            .now()
+                                                                        .toString(),
+                                                              ),
                                                               style: TextStyle(
                                                                 fontSize: 13,
                                                                 //fontWeight: FontWeight.bold,

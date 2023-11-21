@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-        TextEditingController searchController = TextEditingController();
+    TextEditingController searchController = TextEditingController();
 
     String formattedDate(String dateStr) {
       DateTime dateTime = DateTime.parse(dateStr);
@@ -39,28 +39,26 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     return Scaffold(
-      
       backgroundColor: kPrimaryColor,
       body: Column(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Searchbar(
             screenWidth: screenWidth,
             screenHeight: screenHeight,
             searchController: searchController,
-            ontap: (){
+            ontap: () {
               Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Search(),
-            ),
-          );
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Search(),
+                ),
+              );
             },
-            onChanged: (query) {
-               
-            },
-            onSearchPressed: () {
-              
-            },
+            onChanged: (query) {},
+            onSearchPressed: () {},
           ),
           Container(
             height: screenHeight * 0.09,
@@ -114,7 +112,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   FutureBuilder(
                       future: rep.fetch(selectedCategory),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           print('Error : ${snapshot.error}');
@@ -123,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           return Text('No data available');
                         } else {
                           final newsData = snapshot.data;
-            
+
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -132,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               itemBuilder: (context, index) {
                                 final result = newsData?.results![index];
                                 final newsUrl = result!.url;
-            
+
                                 return Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 5,
@@ -153,13 +152,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.symmetric(vertical: 10),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10),
                                           child: Container(
                                             width: screenWidth * 3.0,
                                             height: screenHeight * 0.2,
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.circular(10),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Color.fromARGB(
@@ -176,21 +177,34 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 Flexible(
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Container(
                                                       width: screenWidth * 1.0,
-                                                      height: screenHeight * 0.18,
+                                                      height:
+                                                          screenHeight * 0.18,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         image: DecorationImage(
-                                                          image: NetworkImage(result!
-                                                              .multimedia!.first.url
-                                                              .toString()),
+                                                          image: NetworkImage(
+                                                            result!.multimedia !=
+                                                                        null &&
+                                                                    result
+                                                                        .multimedia!
+                                                                        .isNotEmpty
+                                                                ? result
+                                                                    .multimedia!
+                                                                    .first!
+                                                                    .url!
+                                                                : '',
+                                                          ),
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                     ),
                                                   ),
                                                 ),
@@ -203,45 +217,65 @@ class _SearchScreenState extends State<SearchScreen> {
                                                     height: screenHeight * 0.8,
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceAround,
                                                       children: [
                                                         Flexible(
                                                           child: Text(
-                                                            result.title.toString(),
+                                                            result!.title !=
+                                                                    null
+                                                                ? result.title
+                                                                    .toString()
+                                                                : 'Default Subsection',
                                                             style: TextStyle(
                                                               fontSize: 15,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ),
                                                         Flexible(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsets.all(
-                                                                    5.0),
+                                                                const EdgeInsets
+                                                                    .all(5.0),
                                                             child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
                                                                 Text(
-                                                                  result.subsection
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                    fontSize: 13,
+                                                                  result!.subsection !=
+                                                                          null
+                                                                      ? result
+                                                                          .subsection
+                                                                          .toString()
+                                                                      : 'Default Subsection',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        13,
                                                                     //fontWeight: FontWeight.bold,
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  formattedDate(result
-                                                                      .publishedDate
-                                                                      .toString()),
-                                                                  style: TextStyle(
-                                                                    fontSize: 13,
+                                                                  formattedDate(result!
+                                                                              .publishedDate !=
+                                                                          null
+                                                                      ? result
+                                                                          .publishedDate
+                                                                          .toString()
+                                                                      : DateTime
+                                                                              .now()
+                                                                          .toString()),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        13,
                                                                     //fontWeight: FontWeight.bold,
                                                                   ),
                                                                 ),

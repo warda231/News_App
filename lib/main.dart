@@ -22,9 +22,7 @@ class MyApp extends StatelessWidget {
       //darkTheme: ThemeData.dark(),
       //themeMode: ThemeMode.system,
        theme: ThemeData(
-        
-       
-        useMaterial3: true,
+       useMaterial3: true,
       ),
       home: HomePage(),
     );

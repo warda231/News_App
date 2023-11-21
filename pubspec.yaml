@@ -41,6 +41,7 @@ dependencies:
   url_launcher: ^6.2.1
   shared_preferences: ^2.2.2
   debounce_textfield: ^0.0.2
+  flutter_cache_manager: ^3.3.1
 
 
 

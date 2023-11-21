@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:news_app/Utils/colors.dart';
+import 'package:news_app/Views/SavedNewsPage.dart';
 import 'package:news_app/Widgets/ProfileCard.dart';
 import 'package:news_app/Widgets/ProfileInfoCount.dart';
 
@@ -99,7 +100,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileCardContainer(icon: Icons.person,txt: 'Edit Profile',
             onTap: (){},),
              ProfileCardContainer(icon: Icons.save_alt,txt: 'Saved News',
-            onTap: (){},),
+            onTap: (){
+                Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SavedNewsScreen(),
+                                          ),
+                                        );
+            },),
             ProfileCardContainer(icon: Icons.settings,txt: 'Settings',
             onTap: (){},),
              ProfileCardContainer(icon: Icons.logout,txt: 'Logout',
